@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "NSString+Utils.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -14,7 +15,7 @@
 @property(strong, nonatomic) NSMutableArray *data; //
 @property(weak, nonatomic) IBOutlet UITextField *textField;
 @property(weak, nonatomic) IBOutlet UIButton *addText;
-@property(weak, nonatomic) IBOutlet UIButton *editTable;
+@property(weak, nonatomic) IBOutlet UIButton *editTableButton;
 
 @end
 
@@ -35,42 +36,56 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-// создаем и регистрируем класс, который работает с таблицей: возвращает значение из ячейки,
-// соответвующей заданному идентификатору
+// регистрируем класс, который сообщает таблице значение ячейки, соответвующей заданному идентификатору
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"identifier"];
 
 }
 
-//создаем таблицу, где кол-во строк равно количеству элементов массива
+//сообщаем таблице что кол-во ее строк равно количеству элементов массива
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.data.count;
 }
 
-//создаем метод, в котором таблица генирирует ячейки, соответвующие заданному идентификатору, по требованию, а не все сразу
+//создаем метод, в котором таблица генирирует ячейки, соответвующие заданному идентификатору,
+// по требованию, а не все сразу
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"identifier" forIndexPath:indexPath];
+
+    //конфигурируем эту ячейку
     cell.textLabel.text = self.data[(NSUInteger) indexPath.row];
-
+    if (indexPath.row<=2)    {
+        cell.backgroundColor = [UIColor yellowColor];}
+    else
+        cell.backgroundColor = [UIColor whiteColor];
     return cell;
+
 }
 
-//методв, котором мы добавляем возможность редактировать ячейки
+//метод, в котором мы сообщаем таблице, какие ячейки можно редактировать
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+
+//    упрощено, так как результат вычисление или yes или no
+    return indexPath.row > 2;
+
 }
 
-//метод, в котором редактирование (удаление записей) возможно,только, если в массиве есть хотябы 1 запись
+//метод, в котором мы реагируем на пользовательское действие - удаление
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        удаляем соот-й эл-т из массива
         [self.data removeObjectAtIndex:(NSUInteger) indexPath.row];
-        self.editTable.enabled = self.data.count > 0;
-        if (self.data.count==0) {
-            self.editTable.selected = NO;
+
+//        выключаем редактирование если удалили посл элемент
+        self.editTableButton.enabled = self.data.count > 3;
+        if (self.data.count==3) {
+            self.editTableButton.selected = NO;
             self.tableView.editing = NO;
         }
 
         [tableView beginUpdates];
+//        меняем табл - удаляем ячейку
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [tableView endUpdates];
 
@@ -80,20 +95,23 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 //     метод, который позволяет обрабатывать нажатие по кнопке (Add)и добавлять строку в массив.
 - (IBAction)onAddRowTapped:(id)sender {
 
-
+//   запоминаем макс индекс
     NSUInteger currentIndex = self.data.count;
     NSString *string = self.textField.text;
+//    добавляем строку в массив
     [self.data addObject:string];
 
-// таблица апдейтится, только если в массиве есть хотябы 1 элемент.
-    self.editTable.enabled = self.data.count > 0;
+// разрешаем редактирование, только если в массиве есть хотябы 1 элемент, кроме нередактируемых
+    self.editTableButton.enabled = self.data.count > 3;
 
 
 //Таблица начитает апдейтиться
     [self.tableView beginUpdates];
 
-
+//создаем индекс пас на кот будем инсертить ячейку
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentIndex inSection:0];
+
+//    меняем табл - сообщаем, что будет добавленя ячейка на таком-то индекс пасе
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 //   после апдейта таблицы строка ввода ввода текста очищается, кнопка Add стнаовится неактивной
@@ -106,19 +124,31 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 // Метод, который делает кнопку Add активной, если в строке ввода текста есть хотябы 1 символ
 - (IBAction)textChanged:(id)sender {
-    self.addText.enabled = self.textField.text.length > 0;
+
+
+        BOOL isEmailValid = [self.textField.text validateEmail];
+
+        self.textField.textColor = isEmailValid ? [UIColor blackColor] : [UIColor redColor];
+
+
+    self.addText.enabled = isEmailValid;
+
 
 }
 
-//   после апдейта таблицы строка ввода ввода текста очищается
+//   прячем клавиатуру при нажатии на кнопку Done
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return NO;
 }
 
-//Метод, который инверсирует значение кнопки Edit.
+//Метод который меняем состояние интерфейса (редактирование - только чтение)
 - (IBAction)editText:(id)sender {
-    self.editTable.selected = !self.editTable.selected;
+
+    //Инвертируем состояние кнопки Edit.
+    self.editTableButton.selected = !self.editTableButton.selected;
+
+    //Инвертируем состояние таблицы.
 
     self.tableView.editing = !self.tableView.editing;
 

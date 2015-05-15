@@ -59,7 +59,7 @@
                     </view>
                     <connections>
                         <outlet property="addText" destination="ICj-A7-dBf" id="DFh-PT-Qbo"/>
-                        <outlet property="editTable" destination="w9E-xc-mr0" id="GHE-Q9-nUe"/>
+                        <outlet property="editTableButton" destination="w9E-xc-mr0" id="GHE-Q9-nUe"/>
                         <outlet property="tableView" destination="jbJ-sE-vwp" id="LWM-Ox-xyX"/>
                         <outlet property="textField" destination="4Qg-WI-nkb" id="cYD-5j-jaL"/>
                     </connections>

@@ -14,6 +14,7 @@
 		E9A2FACB1AFDF3FE000CFF1E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9A2FACA1AFDF3FE000CFF1E /* Images.xcassets */; };
 		E9A2FACE1AFDF3FE000CFF1E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9A2FACC1AFDF3FE000CFF1E /* LaunchScreen.xib */; };
 		E9A2FADA1AFDF3FE000CFF1E /* PlayWithEditableTableTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A2FAD91AFDF3FE000CFF1E /* PlayWithEditableTableTests.m */; };
+		EBBF256E556C896A1F41FB4C /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = EBBF246B883D80D73415C9C8 /* NSString+Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		E9A2FAD31AFDF3FE000CFF1E /* PlayWithEditableTableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWithEditableTableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A2FAD81AFDF3FE000CFF1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9A2FAD91AFDF3FE000CFF1E /* PlayWithEditableTableTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayWithEditableTableTests.m; sourceTree = "<group>"; };
+		EBBF246B883D80D73415C9C8 /* NSString+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utils.m"; sourceTree = "<group>"; };
+		EBBF2E64B9D4E7A500B1AA74 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,8 @@
 				E9A2FACA1AFDF3FE000CFF1E /* Images.xcassets */,
 				E9A2FACC1AFDF3FE000CFF1E /* LaunchScreen.xib */,
 				E9A2FABD1AFDF3FE000CFF1E /* Supporting Files */,
+				EBBF246B883D80D73415C9C8 /* NSString+Utils.m */,
+				EBBF2E64B9D4E7A500B1AA74 /* NSString+Utils.h */,
 			);
 			path = PlayWithEditableTable;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 				E9A2FAC61AFDF3FE000CFF1E /* ViewController.m in Sources */,
 				E9A2FAC31AFDF3FE000CFF1E /* AppDelegate.m in Sources */,
 				E9A2FAC01AFDF3FE000CFF1E /* main.m in Sources */,
+				EBBF256E556C896A1F41FB4C /* NSString+Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
